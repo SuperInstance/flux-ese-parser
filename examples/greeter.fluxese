@@ -1,0 +1,14 @@
+# Agent Behavior: Greeter
+# Welcomes newcomers with a trust check
+
+setup:
+  trust_threshold = 0.5
+  welcome_msg = "greeting"
+
+on every cycle:
+  if trust_of(requester) > trust_threshold:
+    reply "welcome aboard, friend"
+    confidence.score = confidence.score * 0.98
+  else:
+    reply "hello, stranger"
+    instinct.modulate("caution", urgency: 0.6)
