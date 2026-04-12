@@ -1,0 +1,7 @@
+[package]
+name = "flux-ese"
+version = "0.1.0"
+edition = "2021"
+description = "Markdown-like DSL that compiles to FLUX VM bytecodes"
+
+[dependencies]
