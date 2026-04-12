@@ -1,0 +1,22 @@
+# Agent Behavior: Energy Guard
+# When energy drops below 20%, delegate expensive tasks to trusted vessels
+
+setup:
+  trust_threshold = 0.7    # TRUST_FLOOR 0.7
+  energy_warning = 20      # literal
+
+on every cycle:
+  read energy_level        # ENERGY_REPORT -> R0
+  
+  if energy_level < energy_warning:
+    # Low energy path
+    confidence.score = confidence.score * 0.95   # CONF_DECAY
+    instinct.modulate("survival", urgency: 0.9)   # INST_MODULATE
+    if trust_of(requester) > trust_threshold:
+      delegate task to requester                   # DELEGATE
+    else:
+      reply "insufficient trust for delegation"     # REPLY
+  else:
+    # Normal path
+    process task                                    # (inline bytecodes)
+    confidence.score = confidence.score * 0.99     # CONF_DECAY (slow)
